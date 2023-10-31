@@ -8,10 +8,10 @@ private string apiKey;
 
 using namespace std;
 int main(void){
-    string phoneNumber = "1234567890"; // Replace this with the phone number
-    string message = "Test message"; // Replace this with the message content
-    string apiKey = "your_api_key_here"; // Replace this with your Textbelt API key
-    performCurlPostCommand(phoneNumber, message, apiKey);
+    string phoneNumber = "6095751848"; 
+    string message = "Test message from the code rather than command line"; 
+    //string apiKey = "your_api_key_here"; 
+    sendTextTest(phoneNumber, message);
 }
 
 size_t writeCallback(void* contents, size_t size, size_t nmemb, string* userp) {
@@ -29,23 +29,23 @@ void sendText(const string& phoneNum, const string& message, const string& key) 
         string url = "https://textbelt.com/text";
         string keyData = "key=" + key;
 
-        string fullCommand = url + " --data-urlencode " + postData + " -d " + keyData;
+        string fullCommand = url + " --data-urlencode " + postData + " -d " + keyData; //formats data for curl command
 
-        curl_easy_setopt(curl, CURLOPT_URL, fullCommand.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, fullCommand.c_str()); //sends curl command
 
         string response;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //retrieves response
 
-        res = curl_easy_perform(curl);
+        res = curl_easy_perform(curl); //performs operation
 
-        if (res != CURLE_OK) {
+        if (res != CURLE_OK) { //doesn't yet really do much with response, might do something later like warn if quota gets low or something like that
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
         } else {
             cout << "Response:\n" << response << endl;
         }
 
-        curl_easy_cleanup(curl);
+        curl_easy_cleanup(curl); //cleanup
     }
 }
 
