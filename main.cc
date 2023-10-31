@@ -4,6 +4,8 @@
 #include <fstream>
 #include <curl/curl.h>
 
+private string apiKey;
+
 using namespace std;
 int main(void){
     string phoneNumber = "1234567890"; // Replace this with the phone number
@@ -17,15 +19,15 @@ size_t writeCallback(void* contents, size_t size, size_t nmemb, string* userp) {
     return size * nmemb;
 }
 
-void performCurlPostCommand(const string& var1, const string& var2, const string& var3) {
+void sendText(const string& phoneNum, const string& message, const string& key) {
     CURL* curl;
     CURLcode res;
 
     curl = curl_easy_init();
     if (curl) {
-        string postData = "phone=" + var1 + "&message=" + var2;
+        string postData = "phone=" + phoneNum + "&message=" + message;
         string url = "https://textbelt.com/text";
-        string keyData = "key=" + var3;
+        string keyData = "key=" + key;
 
         string fullCommand = url + " --data-urlencode " + postData + " -d " + keyData;
 
@@ -45,4 +47,12 @@ void performCurlPostCommand(const string& var1, const string& var2, const string
 
         curl_easy_cleanup(curl);
     }
+}
+
+void sendText(const string& phoneNum, const string& message) { //overload function, if key not included then use global key variable
+    sendText(phoneNum, message, apiKey); 
+}
+
+void sendTextTest(const string& phoneNum, const string& message) { //overload function uses free test key, limited use
+    sendText(phoneNum, message, "textbelt"); 
 }
