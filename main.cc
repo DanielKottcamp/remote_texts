@@ -4,9 +4,15 @@
 #include <fstream>
 #include <curl/curl.h>
 
-private string apiKey;
+
+//string apiKey;
 
 using namespace std;
+size_t writeCallback(void* contents, size_t size, size_t nmemb, string* userp);
+void sentText(const string& phoneNum, const string& message, const string& key);
+void sendText(const string& phoneNum, const string& message);
+void sendTextTest(const string& phoneNum, const string& message);
+
 int main(void){
     string phoneNumber = "6095751848"; 
     string message = "Test message from the code rather than command line"; 
@@ -50,7 +56,7 @@ void sendText(const string& phoneNum, const string& message, const string& key) 
 }
 
 void sendText(const string& phoneNum, const string& message) { //overload function, if key not included then use global key variable
-    sendText(phoneNum, message, apiKey); 
+   // sendText(phoneNum, message, apiKey); 
 }
 
 void sendTextTest(const string& phoneNum, const string& message) { //overload function uses free test key, limited use
