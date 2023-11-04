@@ -35,9 +35,12 @@ void sendText(const string& phoneNum, const string& message, const string& key) 
         string url = "https://textbelt.com/text";
         string keyData = "key=" + key;
 
-        string fullCommand = url + " --data-urlencode " + postData + " -d " + keyData; //formats data for curl command
+        string args = /*url + " --data-urlencode " + */postData + " -d " + keyData; //formats data for curl command
 
-        curl_easy_setopt(curl, CURLOPT_URL, fullCommand.c_str()); //sends curl command
+        //curl_easy_setopt(curl, CURLOPT_URL, fullCommand.c_str()); //sends curl command
+        
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str());
 
         string response;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
