@@ -2,9 +2,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-// #include <curl/curl.h>
+#include <vector>
+#include <curl/curl.h>
 
 string apiKey;
+vector<string> phoneNums[9];
+vector<string> messages[9];
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
@@ -96,7 +99,14 @@ void readConfigFile()
         if(type == "API"){
             apiKey = &val;
         }
-        //else if(type == )
+        else if(type.substr(0, type.length()-2) == "PHONE"){ //phone numbers
+            int num = type.c_str()[type.length()-2] - '0'; //convert number after phone to integer
+            phoneNums[num] = val; //add to vector
+        }
+        else if(type.substr(0, type.length()-2) == "MESSAGE"){ //messages numbers
+            int num = type.c_str()[type.length()-2] - '0'; //convert number after message to integer
+            messages[num] = val; //add to vector
+        }
     }
 }
 
