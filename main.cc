@@ -8,18 +8,20 @@
 string apiKey;
 vector<string> phoneNums[9];
 vector<string> messages[9];
+string emergencyMessage;
+vector<string> emergencyNums;
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
 void sentText(const string &phoneNum, const string &message, const string &key);
 void sendText(const string &phoneNum, const string &message);
 void sendTextTest(const string &phoneNum, const string &message);
+void readConfigFile();
 
 int main(void)
 {
     string phoneNumber = "6095751848";
     string message = "Test message from the code rather than command line";
-    // string apiKey = "your_api_key_here";
     sendTextTest(phoneNumber, message);
 }
 
@@ -101,13 +103,25 @@ void readConfigFile()
         }
         else if(type.substr(0, type.length()-2) == "PHONE"){ //phone numbers
             int num = type.c_str()[type.length()-2] - '0'; //convert number after phone to integer
-            phoneNums[num] = val; //add to vector
+            phoneNums[num] = &val; //add to vector
         }
         else if(type.substr(0, type.length()-2) == "MESSAGE"){ //messages numbers
             int num = type.c_str()[type.length()-2] - '0'; //convert number after message to integer
-            messages[num] = val; //add to vector
+            messages[num] = &val; //add to vector
+        }
+        else if(type.substr(0, type.length()-2) == "EMERGENCY"){
+            emergencyMessage = &val;
+        }
+        else if(type.substr(0, type.length()-2) == "EMERGENCYSEND"){
+            deliminator = line.find(",");
+            while(deliminator != line.npos){
+                string num = trimSpaces(line.substr(0, deliminator)); //issolate first num
+                emergencyNums.push_back(num); //push num into vector
+                line = line.substr(deliminator + 1); //remove from line
+            }
         }
     }
+    config.close();
 }
 
 string trimSpaces(string &str){
