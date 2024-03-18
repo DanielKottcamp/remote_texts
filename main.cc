@@ -4,12 +4,18 @@
 #include <fstream>
 #include <vector>
 #include <curl/curl.h>
+#include <wiringPi.h>
 
 string apiKey;
 vector<string> phoneNums[9];
 vector<string> messages[9];
 string emergencyMessage;
 vector<string> emergencyNums;
+
+//GPIO pins, currently all temp and only 1 pin per function
+#define PhoneNum1 17 //assign GPIO pin 17 to first phone button
+#define MessageNum1 27 //GPIO pin 27 to first message button
+#define sendButton 22 //GPIO pin 22 to send message button
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
@@ -22,7 +28,46 @@ int main(void)
 {
     string phoneNumber = "6095751848";
     string message = "Test message from the code rather than command line";
-    sendTextTest(phoneNumber, message);
+    if (wiringPiSetupGpio() == -1) { //error out if issue with wiringpi library
+        std::cerr << "Failed to initialize WiringPi library" << std::endl;
+        return 1;
+    }
+    readConfigFile();
+    
+    //sendTextTest(phoneNumber, message);
+}
+
+
+void pinSetup(){
+    pinMode(PhoneNum1, INPUT);
+    pinMode(MessageNum1, INPUT);
+    pinMode(sendButton, INPUT);
+}
+
+void buttonLoop(){ //break off main loop into it's own function to better facilitate debugging
+    bool NumsUsed[9] = {false}; 
+    uint8_t message;
+    while(true){
+        int phoneNum1state = digitalRead(PhoneNum1);
+        int message1state = digitalRead(MessageNum1);
+        int sendstate = digitalRead(sendButton);
+
+        if(phoneNum1state == LOW){
+            NumsUsed[0] = !NumsUsed[0];
+        }
+        if(message1state == LOW){
+            message = 1;
+        }
+        if(sendstate == LOW){
+            for(int i = 0; i < 9; i++){
+                if(NumsUsed[i]){
+                    sendText(phoneNums[i], messages[message])
+                }
+            }
+            message = NULL;
+            NumsUsed = {false};
+        }
+    }
 }
 
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp)
