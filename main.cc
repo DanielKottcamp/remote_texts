@@ -78,7 +78,7 @@ void buttonLoop()
         }
         if (message1state == LOW)
         {
-            message = 1;
+            message = 0;
             cout << "Message button pressed";
         }
         if (sendstate == LOW && message >= 0 && message < 10)
