@@ -44,12 +44,13 @@ int main(void)
 
 
     sendText(phoneNums[0], textMess[0]);
+    buttonLoop();
 }
 
 void manualConfig(){ //alternate to readConfigFile used in testing
     apiKey = "a2785a58de916127bd7bf54ae260dfa406e54486XMpDe4vFZFb6cbkaOejR10eeb";
     phoneNums[0] = "6095751848";
-    textMess[0] = "Generic test text message"
+    textMess[0] = "Generic test text message";
 }
 
 void pinSetup()
@@ -72,13 +73,16 @@ void buttonLoop()
         if (phoneNum1state == LOW)
         {
             NumsUsed[0] = !NumsUsed[0];
+            cout << "Phone number button pressed, currently" << NumsUsed[0];
         }
         if (message1state == LOW)
         {
             message = 1;
+            cout << "Message button pressed";
         }
         if (sendstate == LOW && message >= 0 && message < 10)
         {
+            cout << "send button pressed, currently";
             for (int i = 0; i < 9; i++)
             {
                 if (NumsUsed[i])
@@ -92,6 +96,7 @@ void buttonLoop()
                 NumsUsed[i] = false;
             }
         }
+        delay(150);
     }
 }
 
