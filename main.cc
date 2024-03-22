@@ -23,24 +23,33 @@ vector<string> emergencyNums;
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
-void sentText(string phoneNum, string message, string key);
+void sendText(string phoneNum, string message, string key);
 void sendText(string phoneNum, string message);
 void sendTextTest(string phoneNum, string message);
 void readConfigFile();
 string trimSpaces(const string &str);
+void manualConfig();
 
 int main(void)
 {
     string phoneNumber = "6095751848";
     string message = "Test message from the code rather than command line";
-    // if (wiringPiSetupGpio() == -1)
-    // { // error out if issue with wiringpi library
-    //     std::cerr << "Failed to initialize WiringPi library" << std::endl;
-    //     return 1;
-    // }
+    if (wiringPiSetupGpio() == -1)
+    { // error out if issue with wiringpi library
+        std::cerr << "Failed to initialize WiringPi library" << std::endl;
+        return 1;
+    }
     //readConfigFile();
+    manualConfig();
 
-    sendTextTest(phoneNumber, message);
+
+    sendText(phoneNums[0], textMess[0]);
+}
+
+void manualConfig(){ //alternate to readConfigFile used in testing
+    apiKey = "a2785a58de916127bd7bf54ae260dfa406e54486XMpDe4vFZFb6cbkaOejR10eeb";
+    phoneNums[0] = "6095751848";
+    textMess[0] = "Generic test text message"
 }
 
 void pinSetup()
