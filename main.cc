@@ -29,6 +29,7 @@ void sendTextTest(string phoneNum, string message);
 void readConfigFile();
 string trimSpaces(const string &str);
 void manualConfig();
+void buttonLoop();
 
 int main(void)
 {
