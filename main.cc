@@ -30,6 +30,7 @@ void readConfigFile();
 string trimSpaces(const string &str);
 void manualConfig();
 void buttonLoop();
+void pinSetup();
 
 int main(void)
 {
@@ -45,6 +46,7 @@ int main(void)
 
 
     sendText(phoneNums[0], textMess[0]);
+    pinSetup();
     buttonLoop();
 }
 
