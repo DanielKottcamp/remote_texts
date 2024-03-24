@@ -59,6 +59,9 @@ void pinSetup()
     pinMode(PhoneNum1, INPUT);
     pinMode(MessageNum1, INPUT);
     pinMode(sendButton, INPUT);
+    pullUpDnControl(PhoneNum1, PUD_UP);
+    pullUpDnControl(MessageNum1, PUD_UP);
+    pullUpDnControl(sendButton, PUD_UP);
 }
 
 void buttonLoop()
@@ -71,17 +74,17 @@ void buttonLoop()
         int message1state = digitalRead(MessageNum1);
         int sendstate = digitalRead(sendButton);
 
-        if (phoneNum1state == LOW)
+        if (phoneNum1state == HIGH)
         {
             NumsUsed[0] = !NumsUsed[0];
             cout << "Phone number button pressed, currently" << NumsUsed[0];
         }
-        if (message1state == LOW)
+        if (message1state == HIGH)
         {
             message = 0;
             cout << "Message button pressed";
         }
-        if (sendstate == LOW && message >= 0 && message < 10)
+        if (sendstate == HIGH && message >= 0 && message < 10)
         {
             cout << "send button pressed, currently";
             for (int i = 0; i < 9; i++)
