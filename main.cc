@@ -76,17 +76,17 @@ void buttonLoop()
         int message1state = digitalRead(MessageNum1);
         int sendstate = digitalRead(sendButton);
 
-        if (phoneNum1state == HIGH)
+        if (phoneNum1state == LOW)
         {
             NumsUsed[0] = !NumsUsed[0];
             cout << "Phone number button pressed, currently" << NumsUsed[0];
         }
-        if (message1state == HIGH)
+        if (message1state == LOW)
         {
             message = 0;
             cout << "Message button pressed";
         }
-        if (sendstate == HIGH && message >= 0 && message < 10)
+        if (sendstate == LOW && message >= 0 && message < 10)
         {
             cout << "send button pressed, currently";
             for (int i = 0; i < 9; i++)
