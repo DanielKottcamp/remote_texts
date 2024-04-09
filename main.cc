@@ -11,15 +11,22 @@
 using namespace std;
 
 string apiKey;
-string phoneNums[9];
-string textMess[9];
+string phoneNums[3];
+string textMess[3];
 string emergencyMessage;
 vector<string> emergencyNums;
 
-// GPIO pins, currently all temp and only 1 pin per function
-#define PhoneNum1 17   // assign GPIO pin 17 to first phone button
-#define MessageNum1 27 // GPIO pin 27 to first message button
-#define sendButton 22  // GPIO pin 22 to send message button
+// GPIO pins for phone numbers
+#define PhoneNum1 9  // GPIO pin 9 for first phone button
+#define PhoneNum2 10   // GPIO pin 10 for second phone button
+#define PhoneNum3 11  // GPIO pin 11 for third phone button
+
+// GPIO pins for message buttons
+#define MessageNum1 5  // GPIO pin 5 for first message button
+#define MessageNum2 6    // GPIO pin 6 for second message button
+#define MessageNum3 13    // GPIO pin 13 for third message button
+
+#define sendButton 22  // GPIO pin 22 for send message button
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
@@ -58,17 +65,29 @@ void manualConfig(){ //alternate to readConfigFile used in testing
 
 void pinSetup()
 {
+    // Set up phone number buttons
     pinMode(PhoneNum1, INPUT);
-    pinMode(MessageNum1, INPUT);
-    pinMode(sendButton, INPUT);
+    pinMode(PhoneNum2, INPUT);
+    pinMode(PhoneNum3, INPUT);
     pullUpDnControl(PhoneNum1, PUD_UP);
+    pullUpDnControl(PhoneNum2, PUD_UP);
+    pullUpDnControl(PhoneNum3, PUD_UP);
+
+    // Set up message buttons
+    pinMode(MessageNum1, INPUT);
+    pinMode(MessageNum2, INPUT);
+    pinMode(MessageNum3, INPUT);
     pullUpDnControl(MessageNum1, PUD_UP);
+    pullUpDnControl(MessageNum2, PUD_UP);
+    pullUpDnControl(MessageNum3, PUD_UP);
+
+    // Set up send message button
+    pinMode(sendButton, INPUT);
     pullUpDnControl(sendButton, PUD_UP);
 }
-
 void buttonLoop()
 { // break off main loop into it's own function to better facilitate debugging
-    bool NumsUsed[9] = {false};
+    bool NumsUsed[3] = {false};
     uint8_t message;
     while (true)
     {
@@ -76,17 +95,37 @@ void buttonLoop()
         int message1state = digitalRead(MessageNum1);
         int sendstate = digitalRead(sendButton);
 
-        if (phoneNum1state == LOW)
+         if (phoneNum1state == LOW)
         {
             NumsUsed[0] = !NumsUsed[0];
-            cout << "Phone number button pressed, currently" << NumsUsed[0];
+            cout << "Phone number 1 button pressed, currently " << NumsUsed[0] << endl;
+        }
+        if (phoneNum2state == LOW)
+        {
+            NumsUsed[1] = !NumsUsed[1];
+            cout << "Phone number 2 button pressed, currently " << NumsUsed[1] << endl;
+        }
+        if (phoneNum3state == LOW)
+        {
+            NumsUsed[2] = !NumsUsed[2];
+            cout << "Phone number 3 button pressed, currently " << NumsUsed[2] << endl;
         }
         if (message1state == LOW)
         {
             message = 0;
-            cout << "Message button pressed";
+            cout << "Message button 1 pressed" << endl;
         }
-        if (sendstate == LOW && message >= 0 && message < 10)
+        if (message2state == LOW)
+        {
+            message = 1;
+            cout << "Message button 2 pressed" << endl;
+        }
+        if (message3state == LOW)
+        {
+            message = 2;
+            cout << "Message button 3 pressed" << endl;
+        }
+        if (sendstate == LOW && message >= 0 && message < 3)
         {
             cout << "send button pressed, currently";
             for (int i = 0; i < 9; i++)
