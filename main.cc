@@ -28,6 +28,14 @@ vector<string> emergencyNums;
 
 #define sendButton 22  // GPIO pin 22 for send message button
 
+//LED GPIO pins
+#define Output1 19  // GPIO pin 19 for LED 1
+#define Output2 26  // GPIO pin 26 for LED 2
+#define Output3 21  // GPIO pin 21 for LED 3
+#define Output4 20  // GPIO pin 20 for LED 4
+#define Output5 16  // GPIO pin 16 for LED 5
+#define Output6 12  // GPIO pin 12 for LED 6
+
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
 void sendText(string phoneNum, string message, string key);
@@ -38,6 +46,7 @@ string trimSpaces(const string &str);
 void manualConfig();
 void buttonLoop();
 void pinSetup();
+bool toggleLEDOutput(int pin);
 
 int main(void)
 {
@@ -60,7 +69,10 @@ int main(void)
 void manualConfig(){ //alternate to readConfigFile used in testing
     apiKey = "a2785a58de916127bd7bf54ae260dfa406e54486XMpDe4vFZFb6cbkaOejR10eeb";
     phoneNums[0] = "6095751848";
-    textMess[0] = "Generic test text message";
+    phoneNums[1] = "7172016926"
+    textMess[0] = "Generic test text message 1";
+    textMess[1] = "Second Generic test text message";
+    textMess[2] = "Third test message for project";
 }
 
 void pinSetup()
@@ -84,11 +96,34 @@ void pinSetup()
     // Set up send message button
     pinMode(sendButton, INPUT);
     pullUpDnControl(sendButton, PUD_UP);
+
+    // Set up output pins
+    pinMode(Output1, OUTPUT);
+    pinMode(Output2, OUTPUT);
+    pinMode(Output3, OUTPUT);
+    pinMode(Output4, OUTPUT);
+    pinMode(Output5, OUTPUT);
+    pinMode(Output6, OUTPUT);
 }
+
+
+bool toggleLEDOutput(int pin)
+{
+    static bool state = false;
+    state = !state;
+    digitalWrite(pin, state ? HIGH : LOW);
+    return state;
+}
+
+
 void buttonLoop()
 { // break off main loop into it's own function to better facilitate debugging
     bool NumsUsed[3] = {false};
     uint8_t message;
+    int outputPins[] = {Output1, Output2, Output3, Output4, Output5, Output6};
+    bool outputsActive[6] = {false};
+
+
     while (true)
     {
         int phoneNum1state = digitalRead(PhoneNum1);
@@ -98,36 +133,69 @@ void buttonLoop()
          if (phoneNum1state == LOW)
         {
             NumsUsed[0] = !NumsUsed[0];
+            outputsActive[0] = toggleLEDOutput(Output1);
             cout << "Phone number 1 button pressed, currently " << NumsUsed[0] << endl;
         }
         if (phoneNum2state == LOW)
         {
             NumsUsed[1] = !NumsUsed[1];
+            outputsActive[1] = toggleLEDOutput(Output2);
             cout << "Phone number 2 button pressed, currently " << NumsUsed[1] << endl;
         }
         if (phoneNum3state == LOW)
         {
             NumsUsed[2] = !NumsUsed[2];
+            outputsActive[2] = toggleLEDOutput(Output3);
             cout << "Phone number 3 button pressed, currently " << NumsUsed[2] << endl;
         }
         if (message1state == LOW)
         {
             message = 0;
+            outputsActive[3] = toggleLEDOutput(Output4);
+            if(outputsActive[4]){
+                outputsActive[4] = toggleLEDOutput(Output5);
+            }
+            if(outputsActive[5]){
+                outputsActive[5] = toggleLEDOutput(Output6);
+            }
             cout << "Message button 1 pressed" << endl;
         }
         if (message2state == LOW)
         {
             message = 1;
+            outputsActive[4] = toggleLEDOutput(Output5);
+            if(outputsActive[3]){
+                outputsActive[3] = toggleLEDOutput(Output4);
+            }
+            if(outputsActive[5]){
+                outputsActive[5] = toggleLEDOutput(Output6);
+            }
             cout << "Message button 2 pressed" << endl;
         }
         if (message3state == LOW)
         {
             message = 2;
+            outputsActive[5] = toggleLEDOutput(Output6);
+            if(outputsActive[4]){
+                outputsActive[4] = toggleLEDOutput(Output5);
+            }
+            if(outputsActive[3]){
+                outputsActive[3] = toggleLEDOutput(Output4);
+            }
             cout << "Message button 3 pressed" << endl;
         }
         if (sendstate == LOW && message >= 0 && message < 3)
         {
             cout << "send button pressed, currently";
+            //turn of LEDs as no numbers or messages will be selected once message sent
+            for (int i = 0; i < 6; ++i)
+            {
+                if (outputsActive[i])
+                {
+                    outputsActive[i] = toggleLEDOutput(outputPins[i]);
+                }
+            }
+
             for (int i = 0; i < 9; i++)
             {
                 if (NumsUsed[i])
