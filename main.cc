@@ -69,7 +69,7 @@ int main(void)
 void manualConfig(){ //alternate to readConfigFile used in testing
     apiKey = "a2785a58de916127bd7bf54ae260dfa406e54486XMpDe4vFZFb6cbkaOejR10eeb";
     phoneNums[0] = "6095751848";
-    phoneNums[1] = "7172016926"
+    phoneNums[1] = "7172016926";
     textMess[0] = "Generic test text message 1";
     textMess[1] = "Second Generic test text message";
     textMess[2] = "Third test message for project";
@@ -127,8 +127,11 @@ void buttonLoop()
     while (true)
     {
         int phoneNum1state = digitalRead(PhoneNum1);
+        int phoneNum2state = digitalRead(PhoneNum2);
+        int phoneNum3state = digitalRead(PhoneNum3);
         int message1state = digitalRead(MessageNum1);
-        int sendstate = digitalRead(sendButton);
+        int message2state = digitalRead(MessageNum2);
+        int message3state = digitalRead(MessageNum3);
 
          if (phoneNum1state == LOW)
         {
