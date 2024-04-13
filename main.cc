@@ -132,6 +132,7 @@ void buttonLoop()
         int message1state = digitalRead(MessageNum1);
         int message2state = digitalRead(MessageNum2);
         int message3state = digitalRead(MessageNum3);
+        int sendstate = digitalRead(sendButton);
 
          if (phoneNum1state == LOW)
         {
