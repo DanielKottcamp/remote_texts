@@ -16,25 +16,27 @@ string textMess[3];
 string emergencyMessage;
 vector<string> emergencyNums;
 
+
+//SWITCH 5 LED INOPERABLE, CONNECTED DIRECTLY TO GROUND BY ACCIDENT, Pins 23 and 25 should be switched
 // GPIO pins for phone numbers
-#define PhoneNum1 9  // GPIO pin 9 for first phone button
-#define PhoneNum2 10   // GPIO pin 10 for second phone button
-#define PhoneNum3 11  // GPIO pin 11 for third phone button
+#define PhoneNum1 27  // GPIO pin 27/pin 13 for first phone button
+#define PhoneNum2 9   // GPIO pin 9/pin 21 for second phone button
+#define PhoneNum3 26  // GPIO pin 26/pin 37 for third phone button
 
 // GPIO pins for message buttons
-#define MessageNum1 5  // GPIO pin 5 for first message button
-#define MessageNum2 6    // GPIO pin 6 for second message button
-#define MessageNum3 13    // GPIO pin 13 for third message button
+#define MessageNum1 18  // GPIO pin 18/pin 12 for first message button
+#define MessageNum2 24    // GPIO pin 24/pin 18 for second message button
+#define MessageNum3 8    // GPIO pin 8/pin 24 for third message button
 
-#define sendButton 22  // GPIO pin 22 for send message button
+#define sendButton 21  // GPIO pin 21/pin 40 for send message button
 
 //LED GPIO pins
-#define Output1 19  // GPIO pin 19 for LED 1
-#define Output2 26  // GPIO pin 26 for LED 2
-#define Output3 21  // GPIO pin 21 for LED 3
-#define Output4 20  // GPIO pin 20 for LED 4
-#define Output5 16  // GPIO pin 16 for LED 5
-#define Output6 12  // GPIO pin 12 for LED 6
+#define Output1 17  // GPIO pin 17/pin 11 for LED 1
+#define Output2 10  // GPIO pin 10/pin 19 for LED 2
+#define Output3 19  // GPIO pin 19/pin 35 for LED 3
+#define Output4 22  // GPIO pin 22/pin 15 for LED 4
+#define Output5 23  // GPIO pin 23/pin 16 for LED 5
+#define Output6 25  // GPIO pin 25/pin 22 for LED 6
 
 using namespace std;
 size_t writeCallback(void *contents, size_t size, size_t nmemb, string *userp);
