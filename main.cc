@@ -48,7 +48,7 @@ string trimSpaces(const string &str);
 void manualConfig();
 void buttonLoop();
 void pinSetup();
-bool toggleLEDOutput(int pin);
+bool toggleLEDOutput(int pin, bool state);
 
 int main(void)
 {
@@ -107,9 +107,8 @@ void pinSetup()
 }
 
 
-bool toggleLEDOutput(int pin)
+bool toggleLEDOutput(int pin, bool state)
 {
-    static bool state = false;
     state = !state;
     digitalWrite(pin, state ? HIGH : LOW);
     return state;
@@ -137,67 +136,67 @@ void buttonLoop()
          if (phoneNum1state == LOW)
         {
             NumsUsed[0] = !NumsUsed[0];
-            outputsActive[0] = toggleLEDOutput(Output1);
+            outputsActive[0] = toggleLEDOutput(Output1, outputsActive[0]);
             cout << "Phone number 1 button pressed, currently " << NumsUsed[0] << endl;
             delay(100);
-            while(phoneNum1state == LOW){delay(100);}
+            #//while(phoneNum1state == LOW){delay(100);}
         }
         if (phoneNum2state == LOW)
         {
             NumsUsed[1] = !NumsUsed[1];
-            outputsActive[1] = toggleLEDOutput(Output2);
+            outputsActive[1] = toggleLEDOutput(Output2, outputsActive[1]);
             cout << "Phone number 2 button pressed, currently " << NumsUsed[1] << endl;
             delay(100);
-            while(phoneNum2state == LOW){delay(100);}
+        //while(phoneNum2state == LOW){delay(100);}
         }
         if (phoneNum3state == LOW)
         {
             NumsUsed[2] = !NumsUsed[2];
-            outputsActive[2] = toggleLEDOutput(Output3);
+            outputsActive[2] = toggleLEDOutput(Output3, outputsActive[2]);
             cout << "Phone number 3 button pressed, currently " << NumsUsed[2] << endl;
             delay(100);
-            while(phoneNum3state == LOW){delay(100);}
+            //while(phoneNum3state == LOW){delay(100);}
         }
         if (message1state == LOW)
         {
             message = 0;
-            outputsActive[3] = toggleLEDOutput(Output4);
+            outputsActive[3] = toggleLEDOutput(Output4, outputsActive[3]);
             if(outputsActive[4]){
-                outputsActive[4] = toggleLEDOutput(Output5);
+                outputsActive[4] = toggleLEDOutput(Output5, outputsActive[4]);
             }
             if(outputsActive[5]){
-                outputsActive[5] = toggleLEDOutput(Output6);
+                outputsActive[5] = toggleLEDOutput(Output6, outputsActive[5]);
             }
             cout << "Message button 1 pressed" << endl;
             delay(100);
-            while(message1state == LOW){delay(100);}
+            //while(message1state == LOW){delay(100);}
         }
         if (message2state == LOW)
         {
             message = 1;
-            outputsActive[4] = toggleLEDOutput(Output5);
+            outputsActive[4] = toggleLEDOutput(Output5, outputsActive[4]);
             if(outputsActive[3]){
-                outputsActive[3] = toggleLEDOutput(Output4);
+                outputsActive[3] = toggleLEDOutput(Output4, outputsActive[3]);
             }
             if(outputsActive[5]){
-                outputsActive[5] = toggleLEDOutput(Output6);
+                outputsActive[5] = toggleLEDOutput(Output6, outputsActive[5]);
             }
             cout << "Message button 2 pressed" << endl;
-            while(message2state == LOW){delay(100);}
+           // while(message2state == LOW){delay(100);}
         }
         if (message3state == LOW)
         {
             message = 2;
-            outputsActive[5] = toggleLEDOutput(Output6);
+            outputsActive[5] = toggleLEDOutput(Output6, outputsActive[5]);
             if(outputsActive[4]){
-                outputsActive[4] = toggleLEDOutput(Output5);
+                outputsActive[4] = toggleLEDOutput(Output5, outputsActive[4]);
             }
             if(outputsActive[3]){
-                outputsActive[3] = toggleLEDOutput(Output4);
+                outputsActive[3] = toggleLEDOutput(Output4, outputsActive[3]);
             }
             cout << "Message button 3 pressed" << endl;
             delay(100);
-            while(message3state == LOW){delay(100);}
+            //while(message3state == LOW){delay(100);}
         }
         if (sendstate == LOW && message >= 0 && message < 3)
         {
@@ -207,7 +206,7 @@ void buttonLoop()
             {
                 if (outputsActive[i])
                 {
-                    outputsActive[i] = toggleLEDOutput(outputPins[i]);
+                    outputsActive[i] = toggleLEDOutput(outputPins[i], outputsActive[i]);
                 }
             }
 
@@ -224,7 +223,7 @@ void buttonLoop()
                 NumsUsed[i] = false;
             }
             delay(100);
-            while(sendstate == LOW){delay(100);}
+            //while(sendstate == LOW){delay(100);}
         }
         delay(100);
     }
