@@ -201,7 +201,7 @@ void buttonLoop()
         }
         if (sendstate == LOW && message >= 0 && message < 3)
         {
-            cout << "Nums Used: " << NumsUsed << "\nmessage: " << message << "\nOutput's active: " << outputsActive << end1;
+            cout << "Nums Used: " << NumsUsed << "\nmessage: " << message << "\nOutput's active: " << outputsActive << endl;
             //turn of LEDs as no numbers or messages will be selected once message sent
             for (int i = 0; i < 6; ++i)
             {
