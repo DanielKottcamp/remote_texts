@@ -52,8 +52,6 @@ bool toggleLEDOutput(int pin);
 
 int main(void)
 {
-    string phoneNumber = "6095751848";
-    string message = "Test message from the code rather than command line";
     if (wiringPiSetupGpio() == -1)
     { // error out if issue with wiringpi library
         std::cerr << "Failed to initialize WiringPi library" << std::endl;
@@ -63,7 +61,7 @@ int main(void)
     manualConfig();
 
 
-    sendText(phoneNums[0], textMess[0]);
+    sendText(phoneNums[0], "Remote text program has started");
     pinSetup();
     buttonLoop();
 }
