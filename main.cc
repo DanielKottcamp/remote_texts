@@ -139,7 +139,7 @@ void buttonLoop()
             outputsActive[0] = toggleLEDOutput(Output1, outputsActive[0]);
             cout << "Phone number 1 button pressed, currently " << NumsUsed[0] << endl;
             delay(100);
-            #//while(phoneNum1state == LOW){delay(100);}
+            //while(phoneNum1state == LOW){delay(100);}
         }
         if (phoneNum2state == LOW)
         {
